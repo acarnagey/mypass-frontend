@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-// import AgentService from '../../api/AgentService';
+import React, {ChangeEvent, Component, FormEvent} from 'react';
+// import APIService from '../../api/APIService';
 import {
   Button,
   Card,
@@ -13,12 +13,16 @@ import {
   Input,
   Label
 } from 'reactstrap';
-// @ts-ignore
 import folderImage from '../../img/folder.png';
+import APIService from '../../services/APIService';
+import AccountService from '../../services/AccountService';
 
-class LoginPage extends Component {
+export interface LoginProps { handleLogin: (loginResponse: any) => Promise<void>; }
+export interface LoginState { email: string; password: string; errorMessage: string; }
 
-  constructor(props: any) {
+class LoginPage extends Component<LoginProps, LoginState> {
+
+  constructor(props: LoginProps) {
     super(props);
 
     this.state = {
@@ -27,31 +31,28 @@ class LoginPage extends Component {
       errorMessage: ''
     };
 
-    // TODO remove binds
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
   }
 
-  handleInputChange(e: any) {
+  handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    this.setState({ [e.target.name]: value });
-  }
+    const key = e.target.name;
 
-  async handleLogin(e: any) {
-    console.log('test');
+    if(Object.keys(this.state).includes(key)) {
+      this.setState({ [key]: value } as Pick<LoginState, keyof LoginState>);
+    }
+  };
+
+  handleLogin = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
-    // @ts-ignore
     const { handleLogin } = { ...this.props };
-    // @ts-ignore
     const { email, password } = { ...this.state };
-    // @ts-ignore
     let { errorMessage } = { ...this.state };
 
     try {
-      // const loginResponse = await AgentService.login({ email, password } );
-      // console.log(JSON.stringify(loginResponse));
-      // handleLogin(loginResponse);
+      const loginResponse = await AccountService.login({ email, password } );
+      console.log(JSON.stringify(loginResponse));
+      await handleLogin(loginResponse);
       return;
     } catch (err) {
       if (err && err.error && err.error.message) {
@@ -61,11 +62,10 @@ class LoginPage extends Component {
       }
     }
     this.setState({ errorMessage });
-  }
+  };
 
   render() {
-    // @ts-ignore
-    const { username, password, errorMessage } = { ...this.state };
+    const { email, password, errorMessage } = { ...this.state };
 
     return (
       <div style={{width: '320px', margin: 'auto'}}>
@@ -81,7 +81,7 @@ class LoginPage extends Component {
               { errorMessage && <div className="error">{errorMessage}</div>}
               <FormGroup>
                 <Label for="email">Email</Label>
-                <Input type="email" name="email" id="email" value={username} onChange={this.handleInputChange} placeholder="Email" />
+                <Input type="email" name="email" id="email" value={email} onChange={this.handleInputChange} placeholder="Email" />
               </FormGroup>
               <FormGroup>
                 <Label for="password">Password</Label>
@@ -102,12 +102,8 @@ class LoginPage extends Component {
         {/*    </form>*/}
         {/*</div>*/}
       </div>
-    )
+    );
   }
 }
-
-// LoginPage.propTypes = {
-//   handleLogin: PropTypes.func.isRequired
-// };
 
 export default LoginPage;

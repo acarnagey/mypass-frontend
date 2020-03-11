@@ -1,7 +1,7 @@
 {
   "globals": {
     "ts-jest": {
-      "tsConfigFile": "tsconfig.json"
+      "tsConfig": "tsconfig.json"
     }
   },
   "moduleFileExtensions": [
@@ -10,8 +10,12 @@
     "js",
     "jsx",
     "json",
-    "node"
+    "node",
+    "png"
   ],
+  "moduleNameMapper": {
+    "\\.(css|scss|svg|png)$": "identity-obj-proxy"
+  },
   "transform": {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },

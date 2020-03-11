@@ -3,8 +3,8 @@ import * as webpack from 'webpack';
 import HtmlWebPackPlugin from 'html-webpack-plugin';
 
 const htmlPlugin = new HtmlWebPackPlugin({
-    template: "./src/index.html",
-    filename: "./index.html",
+    template: './src/index.html',
+    filename: './index.html',
     favicon: 'public/favicon.ico'
 });
 
@@ -14,7 +14,7 @@ const config: webpack.Configuration = {
     devtool: 'source-map',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: "[name].js"
+        filename: '[name].js'
     },
     devServer: {
         port: 3001,
@@ -30,7 +30,7 @@ const config: webpack.Configuration = {
         inline: true
     },
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".jsx"]
+        extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
     plugins: [htmlPlugin],
     module: {
@@ -40,15 +40,15 @@ const config: webpack.Configuration = {
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: "ts-loader"
+                        loader: 'ts-loader'
                     }
                 ]
             },
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
             {
-                enforce: "pre",
+                enforce: 'pre',
                 test: /\.js$/,
-                loader: "source-map-loader"
+                loader: 'source-map-loader'
             },
             {
                 test: /\.s?css$/,
@@ -57,16 +57,16 @@ const config: webpack.Configuration = {
             {
                 test: /\.(png|svg|jpg|gif)$/,
                 use: [
-                    'file-loader',
-                ],
-            },
+                    'file-loader'
+                ]
+            }
             // {
             //     test: /\.(png|svg|jpg|gif)$/,
             //     loader: "file-loader",
             //     options: { name: '/static/[name].[ext]' }
             // }
         ]
-    },
+    }
     // When importing a module whose path matches one of the following, just
     // assume a corresponding global variable exists and use that instead.
     // This is important because it allows us to avoid bundling all of our

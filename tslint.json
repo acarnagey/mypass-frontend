@@ -10,8 +10,9 @@
   },
   "jsRules": {},
     "rules": {
+      "semicolon": [true, "always", "strict-bound-class-methods"],
       "no-console": false,
-      "quotemark": [true, "single"],
+      "quotemark": [true, "single", "jsx-double"],
       "object-literal-sort-keys": false,
       "trailing-comma": [true, {
         "singleline": "never",
