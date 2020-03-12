@@ -23,26 +23,29 @@ import AddNewDocument from './AddNewDocument';
 import Account from '../../models/Account';
 import Document from '../../models/Document';
 import StringUtil from '../../util/StringUtil';
+import FileUploader from '../common/FileUploader';
+import DocumentService from '../../services/DocumentService';
 
 // import Dropzone from 'react-dropzone';
 
-interface HomeState {
+interface HomePageState {
   searchedDocuments: [Document?];
   documentSelected?: Document;
   isAccount: boolean;
   sortAsc: boolean;
   showModal: boolean;
   isAccountMenuOpen: boolean;
+  newFile?: File;
 }
 
-interface HomeProps {
+interface HomePageProps {
   account: Account;
   handleLogout: () => void;
 }
 
-class HomePage extends Component<HomeProps, HomeState> {
+class HomePage extends Component<HomePageProps, HomePageState> {
 
-  constructor(props: Readonly<HomeProps>) {
+  constructor(props: Readonly<HomePageProps>) {
     super(props);
 
     this.state = {
@@ -51,7 +54,8 @@ class HomePage extends Component<HomeProps, HomeState> {
       isAccount: false,
       sortAsc: true,
       showModal: false,
-      isAccountMenuOpen: false
+      isAccountMenuOpen: false,
+      newFile: undefined
     };
   }
 
@@ -117,6 +121,19 @@ class HomePage extends Component<HomeProps, HomeState> {
     this.setState({isAccountMenuOpen: !isAccountMenuOpen});
   };
 
+  setFile = (newFile: File) => {
+    this.setState({newFile});
+  };
+
+  handleAddNewDocument = async () => {
+    const { newFile } = { ...this.state };
+    if (newFile) {
+      const response = await DocumentService.addDocument(newFile);
+      console.log(response);
+    }
+    this.toggleModal();
+  };
+
   renderModal() {
     const {showModal} = {...this.state};
 
@@ -125,19 +142,10 @@ class HomePage extends Component<HomeProps, HomeState> {
         <Modal isOpen={showModal} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Upload Document</ModalHeader>
           <ModalBody>
-            {/*<Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>*/}
-            {/*    {({getRootProps, getInputProps}) => (*/}
-            {/*        <section>*/}
-            {/*            <div {...getRootProps()}>*/}
-            {/*                <input {...getInputProps()} />*/}
-            {/*                <p>Drag 'n' drop some files here, or click to select files</p>*/}
-            {/*            </div>*/}
-            {/*        </section>*/}
-            {/*    )}*/}
-            {/*</Dropzone>*/}
+            <FileUploader setFile={this.setFile} />
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.toggleModal}>Confirm</Button>{' '}
+            <Button color="primary" onClick={this.handleAddNewDocument}>Confirm</Button>{' '}
             <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
           </ModalFooter>
         </Modal>

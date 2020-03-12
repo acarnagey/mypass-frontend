@@ -27,6 +27,8 @@
     "material-components-web": "^5.1.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-dropzone": "latest",
+    "react-image-file-resizer": "^0.2.1",
     "reactstrap": "latest"
   },
   "devDependencies": {

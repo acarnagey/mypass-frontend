@@ -1,14 +1,19 @@
 import AgentService from './APIService';
 
-const PATH = '/documenttypes';
+const PATH = '/document';
 
-class DocumentTypesService extends AgentService {
+class DocumentService extends AgentService {
 
   static async get(): Promise<any> {
     const response = await super.get(PATH);
     return response;
   }
 
+  static async addDocument(newFile: File): Promise<any> {
+    const response = await super.postDocument(newFile);
+    return response;
+  }
+
 }
 
-export default DocumentTypesService;
+export default DocumentService;

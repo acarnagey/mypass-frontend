@@ -7,10 +7,9 @@ const API_ENDPOINT = 'http://localhost:5000/api';
 // const { API_ENDPOINT } = process.env;
 
 class APIService {
-  static getHeaders(): HeadersInit {
-      const headers: HeadersInit = {
-        'Content-Type': 'application/json'
-      };
+  static getHeaders(isFormURLEncoded?: boolean): HeadersInit {
+      const headers: HeadersInit = isFormURLEncoded ?
+        {'Content-Type': 'application/x-www-form-urlencoded'} : {'Content-Type': 'application/json'};
       if(AuthService.isLoggedIn()) {
         headers.Authorization = `Bearer ${AuthService.getAccessToken()}`;
       }
@@ -45,6 +44,41 @@ class APIService {
     }
     return response;
   }
+
+  static async postDocument(file: File) {
+    const path = '/documents';
+    const input = `${API_ENDPOINT}${path}`;
+    const headers = await this.getHeaders();
+    const formdata = new FormData();
+    formdata.append('img', file, file.name);
+    formdata.append('payload.id', '5e66c791a055d78324d059e5');
+    formdata.append('body.type', 'Driver\'s License');
+    const init = {
+      method: 'POST',
+      headers,
+      body: formdata
+    };
+    const response = await fetch(input, init);
+    return response.json();
+  }
+
+//   var myHeaders = new Headers();
+//   myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjZjNzkxYTA1NWQ3ODMyNGQwNTllNSIsInVzZXJuYW1lIjoic2FsbHlvd25lciIsInJvbGUiOiJvd25lciIsImV4cCI6MTU4ODk4MDU1NSwiaWF0IjoxNTgzNzk2NTU1fQ.-Wih4GaVGQQIm3P-E0dVJaUPlxRUpzGLsI4Ov1gp79g");
+//   myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+//
+
+//
+//   var requestOptions = {
+//     method: 'POST',
+//     headers: myHeaders,
+//     body: formdata,
+//     redirect: 'follow'
+//   };
+//
+//   fetch("http://localhost:5000/api/documents", requestOptions)
+// .then(response => response.text())
+// .then(result => console.log(result))
+// .catch(error => console.log('error', error));
 
   static async put(path: any, entity: any) {
     const input = `${API_ENDPOINT}${path}`;
