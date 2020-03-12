@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import LoginPage from './auth/LoginPage';
+import HomePage from './home/HomePage';
+import Account from '../models/Account';
 
-export interface AppState { isLoggedIn: boolean; account?: object; }
+export interface AppState { isLoggedIn: boolean; account?: Account; }
 
 class App extends Component<{}, AppState> {
   constructor(props: any) {
@@ -23,9 +25,11 @@ class App extends Component<{}, AppState> {
   };
 
   public render() {
+    const { isLoggedIn, account } = { ...this.state };
     return (
       <div>
-        <LoginPage handleLogin={this.handleLogin}/>
+        { isLoggedIn && <HomePage /> }
+        { !isLoggedIn && <LoginPage handleLogin={this.handleLogin} /> }
       </div>
     );
   }

@@ -14,7 +14,6 @@ import {
   Label
 } from 'reactstrap';
 import folderImage from '../../img/folder.png';
-import APIService from '../../services/APIService';
 import AccountService from '../../services/AccountService';
 
 export interface LoginProps { handleLogin: (loginResponse: any) => Promise<void>; }
@@ -50,7 +49,7 @@ class LoginPage extends Component<LoginProps, LoginState> {
     let { errorMessage } = { ...this.state };
 
     try {
-      const loginResponse = await AccountService.login({ email, password } );
+      const loginResponse = await AccountService.login({account: { email, password }} );
       console.log(JSON.stringify(loginResponse));
       await handleLogin(loginResponse);
       return;
@@ -74,9 +73,6 @@ class LoginPage extends Component<LoginProps, LoginState> {
             <img style={{display: 'inline-block', width: '60px', height: '60px', objectFit: 'contain'}} className="logo" src={folderImage} alt="Logo" />
             <div style={{display: 'inline-block', fontSize: '24px', marginLeft: '24px'}}>MyPass</div>
             <div style={{fontSize: '18px', borderBottom: '1px solid #ccc', marginBottom: '18px'}}>Login</div>
-            {/*<CardTitle>MyPass</CardTitle>*/}
-            {/*<CardSubtitle>Login</CardSubtitle>*/}
-            {/*<CardText>*/}
             <Form onSubmit={this.handleLogin}>
               { errorMessage && <div className="error">{errorMessage}</div>}
               <FormGroup>
@@ -89,18 +85,8 @@ class LoginPage extends Component<LoginProps, LoginState> {
               </FormGroup>
               <Button type="submit">Login</Button>
             </Form>
-            {/*</CardText>*/}
           </CardBody>
         </Card>
-        {/*<div>*/}
-        {/*    Login page*/}
-        {/*    <form onSubmit={e => this.handleLogin(e)}>*/}
-
-        {/*        <input name="email" type="email" value={username} onChange={this.handleInputChange} />*/}
-        {/*        <input name="password" type="password" value={password} onChange={this.handleInputChange} />*/}
-        {/*        <input type="submit" />*/}
-        {/*    </form>*/}
-        {/*</div>*/}
       </div>
     );
   }

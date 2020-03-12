@@ -1,6 +1,8 @@
 // TODO use .env for developer's local config
 // const API_ENDPOINT = 'http://localhost:5000/api';
-const API_ENDPOINT = 'http://34.212.27.73:3000/api';
+const API_ENDPOINT = 'http://34.212.27.73:5000/api';
+// const API_ENDPOINT = 'http://54.245.189.252:3000/api';
+
 // const { API_ENDPOINT } = process.env;
 
 class APIService {
