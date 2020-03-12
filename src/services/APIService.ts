@@ -1,21 +1,26 @@
 // TODO use .env for developer's local config
-// const API_ENDPOINT = 'http://localhost:5000/api';
-const API_ENDPOINT = 'http://34.212.27.73:5000/api';
-// const API_ENDPOINT = 'http://54.245.189.252:3000/api';
+import AuthService from './AuthService';
+
+const API_ENDPOINT = 'http://localhost:5000/api';
+// const API_ENDPOINT = 'http://34.212.27.73:5000/api';
 
 // const { API_ENDPOINT } = process.env;
 
 class APIService {
-  static async getHeaders() {
-      return {
+  static getHeaders(): HeadersInit {
+      const headers: HeadersInit = {
         'Content-Type': 'application/json'
       };
+      if(AuthService.isLoggedIn()) {
+        headers.Authorization = `Bearer ${AuthService.getAccessToken()}`;
+      }
+      return headers;
   }
 
-  static async get(path: any) {
-    const input = `${API_ENDPOINT}${path}`;
-    const headers = await this.getHeaders();
-    const init = {
+  static async get(path: string) {
+    const input: RequestInfo = `${API_ENDPOINT}${path}`;
+    const headers: HeadersInit = await this.getHeaders();
+    const init: RequestInit = {
       method: 'GET',
       headers
     };

@@ -1,23 +1,26 @@
 import React, {ChangeEvent, Component, FormEvent} from 'react';
-// import APIService from '../../api/APIService';
 import {
   Button,
   Card,
-  CardBody, CardImg,
-  CardSubtitle,
-  CardText,
-  CardTitle,
+  CardBody,
   Form,
-  FormFeedback,
   FormGroup,
   Input,
   Label
 } from 'reactstrap';
 import folderImage from '../../img/folder.png';
 import AccountService from '../../services/AccountService';
+import './LoginPage.scss';
 
-export interface LoginProps { handleLogin: (loginResponse: any) => Promise<void>; }
-export interface LoginState { email: string; password: string; errorMessage: string; }
+export interface LoginProps {
+  handleLogin: (loginResponse: any) => Promise<void>;
+}
+
+export interface LoginState {
+  email: string;
+  password: string;
+  errorMessage: string;
+}
 
 class LoginPage extends Component<LoginProps, LoginState> {
 
@@ -29,27 +32,26 @@ class LoginPage extends Component<LoginProps, LoginState> {
       password: '',
       errorMessage: ''
     };
-
   }
 
   handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+    const {value} = e.target;
     const key = e.target.name;
 
-    if(Object.keys(this.state).includes(key)) {
-      this.setState({ [key]: value } as Pick<LoginState, keyof LoginState>);
+    if (Object.keys(this.state).includes(key)) {
+      this.setState({[key]: value} as Pick<LoginState, keyof LoginState>);
     }
   };
 
   handleLogin = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
-    const { handleLogin } = { ...this.props };
-    const { email, password } = { ...this.state };
-    let { errorMessage } = { ...this.state };
+    const {handleLogin} = {...this.props};
+    const {email, password} = {...this.state};
+    let {errorMessage} = {...this.state};
 
     try {
-      const loginResponse = await AccountService.login({account: { email, password }} );
+      const loginResponse = await AccountService.login({account: {email, password}});
       console.log(JSON.stringify(loginResponse));
       await handleLogin(loginResponse);
       return;
@@ -60,33 +62,42 @@ class LoginPage extends Component<LoginProps, LoginState> {
         errorMessage = 'Oops, something went wrong. Please try again in a few minutes.';
       }
     }
-    this.setState({ errorMessage });
+    this.setState({errorMessage});
   };
 
   render() {
-    const { email, password, errorMessage } = { ...this.state };
+    const {email, password, errorMessage} = {...this.state};
 
     return (
-      <div style={{width: '320px', margin: 'auto'}}>
-        <Card style={{margin: '24px'}}>
-          <CardBody>
-            <img style={{display: 'inline-block', width: '60px', height: '60px', objectFit: 'contain'}} className="logo" src={folderImage} alt="Logo" />
-            <div style={{display: 'inline-block', fontSize: '24px', marginLeft: '24px'}}>MyPass</div>
-            <div style={{fontSize: '18px', borderBottom: '1px solid #ccc', marginBottom: '18px'}}>Login</div>
-            <Form onSubmit={this.handleLogin}>
-              { errorMessage && <div className="error">{errorMessage}</div>}
-              <FormGroup>
-                <Label for="email">Email</Label>
-                <Input type="email" name="email" id="email" value={email} onChange={this.handleInputChange} placeholder="Email" />
-              </FormGroup>
-              <FormGroup>
-                <Label for="password">Password</Label>
-                <Input type="password" name="password" id="password" value={password} onChange={this.handleInputChange} placeholder="Password" />
-              </FormGroup>
-              <Button type="submit">Login</Button>
-            </Form>
-          </CardBody>
-        </Card>
+      <div className="login-background">
+        <div className="login-container">
+          <Card className="login-card">
+            <CardBody>
+              <img className="logo login-logo" src={folderImage} alt="Logo"/>
+              <div className="login-title">MyPass</div>
+              <div className="login-subtitle">Login</div>
+              <Form onSubmit={this.handleLogin}>
+                {errorMessage && <div className="error">{errorMessage}</div>}
+                <FormGroup>
+                  <Label for="email">Email</Label>
+                  <Input type="email" name="email" id="email" value={email} onChange={this.handleInputChange}
+                         placeholder="Email"/>
+                </FormGroup>
+                <FormGroup>
+                  <Label for="password">Password</Label>
+                  <Input type="password"
+                         name="password"
+                         id="password"
+                         value={password}
+                         onChange={this.handleInputChange}
+                         placeholder="Password"
+                  />
+                </FormGroup>
+                <Button type="submit">Login</Button>
+              </Form>
+            </CardBody>
+          </Card>
+        </div>
       </div>
     );
   }

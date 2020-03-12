@@ -1,21 +1,9 @@
 @import '../../colors.scss';
 
-.home-content {
-  display: table;
-  width: 100%;
-  min-height: 400px;
-}
-
-.home-main {
-  margin-left: 15px;
-}
-
-
-
 @media only screen and (min-width: 600px)  {
   .home-side {
     border-top-right-radius: 50px;
-    display: table-cell;
+    display: flex;
     width: 95px;
     height: 100%;
     background-color: $blue;
@@ -54,6 +42,9 @@
 
 #home-container {
   margin: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 
   #home-top-bar {
 
@@ -76,10 +67,39 @@
       cursor: pointer;
     }
   }
+
+  .home-content {
+    display: flex;
+    width: 100%;
+    flex-grow: 1;
+
+    .home-main {
+      margin-left: 15px;
+    }
+
+  }
 }
 
 .search {
   flex-grow: 1;
+}
+
+.account-circle {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  display: inline-block;
+  background-color: $blue;
+  border-radius: 50%;
+  border: 1px solid white;
+  font-size: 28px;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 60px;
+  //position:relative;
+  //left:-20px;
+  //bottom: 26px;
 }
 
 

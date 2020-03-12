@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import {Breadcrumb, BreadcrumbItem, ListGroup, ListGroupItem} from 'reactstrap';
 import Account from '../../models/Account';
+import StringUtil from '../../util/StringUtil';
 
-interface ProfileProps {
-    account?: Account;
+interface AccountPageProps {
+    account: Account;
     goBack: () => void;
 }
 
-class Profile extends Component<ProfileProps> {
-    constructor(props: Readonly<ProfileProps>) {
+class AccountPage extends Component<AccountPageProps> {
+    constructor(props: Readonly<AccountPageProps>) {
         super(props);
     }
 
@@ -27,9 +28,10 @@ class Profile extends Component<ProfileProps> {
                         {/*     src={account.profileimgUrl}*/}
                         {/*     alt="profile"*/}
                         {/*/>*/}
+                        <div className="account-circle">{StringUtil.getFirstUppercase(account.username)}</div>
                         <div style={{marginLeft: '24px',display: 'inline-block'}}>
                             {/*{`${account.firstName} ${account.lastName}`}*/}
-                            { account && account.username }
+                            { account.username }
                         </div>
                     </ListGroupItem>
                 </ListGroup>
@@ -38,4 +40,4 @@ class Profile extends Component<ProfileProps> {
     }
 }
 
-export default Profile;
+export default AccountPage;
