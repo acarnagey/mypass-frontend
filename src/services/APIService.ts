@@ -48,7 +48,11 @@ class APIService {
   static async postDocument(file: File) {
     const path = '/documents';
     const input = `${API_ENDPOINT}${path}`;
-    const headers = await this.getHeaders();
+    // const headers = await this.getHeaders(true);
+    const headers = {
+      Authorization: `Bearer ${AuthService.getAccessToken()}`
+      // 'Content-Type': 'multipart/form-data'
+    };
     const formdata = new FormData();
     formdata.append('img', file, file.name);
     formdata.append('payload.id', '5e66c791a055d78324d059e5');

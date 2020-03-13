@@ -25,6 +25,7 @@ import Document from '../../models/Document';
 import StringUtil from '../../util/StringUtil';
 import FileUploader from '../common/FileUploader';
 import DocumentService from '../../services/DocumentService';
+import ProgressIndicator from '../common/ProgressIndicator';
 
 // import Dropzone from 'react-dropzone';
 
@@ -36,6 +37,7 @@ interface HomePageState {
   showModal: boolean;
   isAccountMenuOpen: boolean;
   newFile?: File;
+  isLoading: boolean;
 }
 
 interface HomePageProps {
@@ -55,7 +57,8 @@ class HomePage extends Component<HomePageProps, HomePageState> {
       sortAsc: true,
       showModal: false,
       isAccountMenuOpen: false,
-      newFile: undefined
+      newFile: undefined,
+      isLoading: false
     };
   }
 
@@ -126,12 +129,16 @@ class HomePage extends Component<HomePageProps, HomePageState> {
   };
 
   handleAddNewDocument = async () => {
-    const { newFile } = { ...this.state };
-    if (newFile) {
-      const response = await DocumentService.addDocument(newFile);
-      console.log(response);
+    const {newFile} = {...this.state};
+    this.setState({isLoading: true});
+    try {
+      if (newFile) {
+        const response = await DocumentService.addDocument(newFile);
+      }
+    } catch (err) {
+      console.error('failed to upload file');
     }
-    this.toggleModal();
+    this.setState({showModal: false, isLoading: false});
   };
 
   renderModal() {
@@ -142,7 +149,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         <Modal isOpen={showModal} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Upload Document</ModalHeader>
           <ModalBody>
-            <FileUploader setFile={this.setFile} />
+            <FileUploader setFile={this.setFile}/>
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.handleAddNewDocument}>Confirm</Button>{' '}
@@ -255,19 +262,25 @@ class HomePage extends Component<HomePageProps, HomePageState> {
   }
 
   render() {
+    const {isLoading} = {...this.state};
     return (
-      <div id="home-container">
-        {this.renderModal()}
-        {this.renderTopBar()}
-        <div className="home-content">
-          <div className="home-side"/>
-          <div className="home-main">
-            {this.renderAccount()}
-            {this.renderMyDocuments()}
-            {this.renderDocumentDetail()}
+      <Fragment>
+        {isLoading &&
+        <ProgressIndicator isFullscreen/>
+        }
+        <div id="home-container">
+          {this.renderModal()}
+          {this.renderTopBar()}
+          <div className="home-content">
+            <div className="home-side"/>
+            <div className="home-main">
+              {this.renderAccount()}
+              {this.renderMyDocuments()}
+              {this.renderDocumentDetail()}
+            </div>
           </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }

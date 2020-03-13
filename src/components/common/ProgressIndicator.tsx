@@ -27,9 +27,7 @@ class ProgressIndicator extends Component<ProgressIndicatorProps> {
     return (
       <Fragment>
         {isFullscreen &&
-          <div style={{position: 'absolute', display: 'flex', alignItems: 'center',
-            justifyContent: 'center', background: 'rgba(255,255,255,0.7)', width: '100%', height: '100%',
-            zIndex:1}}>
+          <div className="progress-fullscreen">
             {this.renderCircularProgressIndicator()}
           </div>
         }
