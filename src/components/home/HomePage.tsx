@@ -1,8 +1,6 @@
 import React, {Component, Fragment} from 'react';
-// import AgentService from '../../api/AgentService';
 import DocumentSummary from './DocumentSummary';
 import DocumentDetail from './DocumentDetail';
-import folderImage from '../../img/folder.png';
 import {
   Button,
   Col,
@@ -26,11 +24,11 @@ import StringUtil from '../../util/StringUtil';
 import FileUploader from '../common/FileUploader';
 import DocumentService from '../../services/DocumentService';
 import ProgressIndicator from '../common/ProgressIndicator';
-
-// import Dropzone from 'react-dropzone';
+import Folder from '../common/Folder';
+import deleteSvg from '../../img/delete.svg';
 
 interface HomePageState {
-  searchedDocuments: [Document?];
+  searchedDocuments: Document[];
   documentSelected?: Document;
   isAccount: boolean;
   sortAsc: boolean;
@@ -63,10 +61,10 @@ class HomePage extends Component<HomePageProps, HomePageState> {
   }
 
   async componentDidMount() {
+    const {account} = {...this.props};
     const {sortAsc} = {...this.state};
-    // TODO use /api/my-account
-    // const account: [Document?] = []; // (await AgentService.getDocuments(account.accountId)).documents;
-    // this.setState({ searchedDocuments: this.sortDocuments(documents, sortAsc) });
+    const documents: Document[] = account.documents;
+    this.setState({ searchedDocuments: this.sortDocuments(documents, sortAsc) });
   }
 
   handleSearchDocuments(query: string) {
@@ -86,7 +84,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     this.setState({sortAsc, searchedDocuments});
   };
 
-  sortDocuments(documents: [Document?], sortAsc: boolean) {
+  sortDocuments(documents: Document[], sortAsc: boolean) {
     return documents.sort((docA: Document, docB: Document) => {
       if (docA.type < docB.type) {
         return sortAsc ? -1 : 1;
@@ -129,16 +127,44 @@ class HomePage extends Component<HomePageProps, HomePageState> {
   };
 
   handleAddNewDocument = async () => {
-    const {newFile} = {...this.state};
+    const {newFile, searchedDocuments} = {...this.state};
     this.setState({isLoading: true});
     try {
       if (newFile) {
         const response = await DocumentService.addDocument(newFile);
+        const newDocument: Document = {
+          url: response.file,
+          notarized: false,
+          did: '',
+          hash: '',
+          vcJwt: '',
+          vpJwt: '',
+          type: 'Driver\'s License',
+          sharedWithAccountIds: []
+        };
+        searchedDocuments.push(newDocument);
       }
     } catch (err) {
       console.error('failed to upload file');
     }
-    this.setState({showModal: false, isLoading: false});
+    this.setState({searchedDocuments, showModal: false, isLoading: false});
+  };
+
+  handleDeleteDocument = async (document: Document) => {
+    let { searchedDocuments } = {...this.state};
+    this.setState({isLoading: true});
+
+    try {
+      await DocumentService.deleteDocument(document.url);
+    } catch (err) {
+      console.error('failed to remove image');
+    }
+
+    searchedDocuments = searchedDocuments.filter(searchedDocument => {
+      return (searchedDocument as Document).url !== document.url;
+    });
+
+    this.setState({ searchedDocuments, isLoading: false });
   };
 
   renderModal() {
@@ -167,7 +193,8 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     return (
       <div id="home-top-bar">
         <div id="home-logo">
-          <img className="logo" src={`${window.location.origin}/${folderImage}`} alt="Logo"/>
+          <Folder />
+          {/*<img className="logo" src={`${window.location.origin}/${folderImage}`} alt="Logo"/>*/}
         </div>
         <Row id="home-search">
           <Col style={{display: 'flex'}}>
@@ -233,10 +260,26 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                   md="6"
                   lg="4"
                   key={idx}
-                  onClick={() => this.handleSelectDocument(document)}
                   className="document-summary-container"
                 >
-                  <DocumentSummary document={document} documentIdx={idx++}/>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end'}}>
+                    <img
+                      style={{cursor: 'pointer'}}
+                      src={deleteSvg}
+                      alt="delete"
+                      onClick={() => this.handleDeleteDocument(document!)}
+                    />
+                  </div>
+                  <div
+                    style={{cursor: 'pointer'}}
+                    onClick={() => this.handleSelectDocument(document)}>
+                    <DocumentSummary
+                      document={document}
+                      documentIdx={idx++}
+                    />
+                  </div>
                 </Col>
               );
             })}

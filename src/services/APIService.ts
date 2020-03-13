@@ -16,6 +16,10 @@ class APIService {
       return headers;
   }
 
+  static getAPIEndpoint() {
+    return API_ENDPOINT;
+  }
+
   static async get(path: string) {
     const input: RequestInfo = `${API_ENDPOINT}${path}`;
     const headers: HeadersInit = await this.getHeaders();
@@ -66,24 +70,6 @@ class APIService {
     return response.json();
   }
 
-//   var myHeaders = new Headers();
-//   myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjZjNzkxYTA1NWQ3ODMyNGQwNTllNSIsInVzZXJuYW1lIjoic2FsbHlvd25lciIsInJvbGUiOiJvd25lciIsImV4cCI6MTU4ODk4MDU1NSwiaWF0IjoxNTgzNzk2NTU1fQ.-Wih4GaVGQQIm3P-E0dVJaUPlxRUpzGLsI4Ov1gp79g");
-//   myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-//
-
-//
-//   var requestOptions = {
-//     method: 'POST',
-//     headers: myHeaders,
-//     body: formdata,
-//     redirect: 'follow'
-//   };
-//
-//   fetch("http://localhost:5000/api/documents", requestOptions)
-// .then(response => response.text())
-// .then(result => console.log(result))
-// .catch(error => console.log('error', error));
-
   static async put(path: any, entity: any) {
     const input = `${API_ENDPOINT}${path}`;
     const headers = await this.getHeaders();
@@ -96,8 +82,8 @@ class APIService {
     return response.json();
   }
 
-  static async delete(path: any, id: any) {
-    const input = `${API_ENDPOINT}${path}/${id}`;
+  static async delete(path: any) {
+    const input = `${API_ENDPOINT}${path}`;
     const headers = await this.getHeaders();
     const init = {
       method: 'DELETE',

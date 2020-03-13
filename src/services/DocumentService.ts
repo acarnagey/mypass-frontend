@@ -1,17 +1,25 @@
 import AgentService from './APIService';
+import AuthService from './AuthService';
 
-const PATH = '/document';
+const PATH = '/documents';
 
 class DocumentService extends AgentService {
 
   static async get(): Promise<any> {
-    const response = await super.get(PATH);
-    return response;
+    return await super.get(PATH);
+  }
+
+  static getDocumentURL(filename: string) {
+    return super.getAPIEndpoint() +
+      `${PATH}/${filename}/${AuthService.getAccessToken()}`;
   }
 
   static async addDocument(newFile: File): Promise<any> {
-    const response = await super.postDocument(newFile);
-    return response;
+    return await super.postDocument(newFile);
+  }
+
+  static async deleteDocument(filename: string) {
+    return await super.delete(`${PATH}/${filename}/${AuthService.getAccessToken()}`);
   }
 
 }

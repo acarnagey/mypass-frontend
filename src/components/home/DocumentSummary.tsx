@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import './DocumentSummary.scss';
 import Document from '../../models/Document';
+import DocumentService from '../../services/DocumentService';
+import deleteSvg from '../../img/delete.svg';
 
 interface DocumentSummaryProps {
   document?: Document;
@@ -59,8 +61,8 @@ class DocumentSummary extends Component<DocumentSummaryProps> {
               { document &&
                 <Fragment>
                   <img className="document-summary-image"
-                       src={document.url}
-                       alt={`document${documentIdx}`}
+                       src={DocumentService.getDocumentURL(document.url)}
+                       alt="doc missing"
                   />
                   <div className="title padding-top-12">{document.type}</div>
                   <div className="subtitle">SHARED WITH</div>

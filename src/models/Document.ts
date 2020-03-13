@@ -9,9 +9,9 @@ interface Document {
   vcJwt?: string;
   vpJwt?: string;
   type: string;
-  uploadedBy: Account;
-  belongsTo: Account;
-  sharedWithAccountIds: [string];
+  uploadedBy?: Account;
+  belongsTo?: Account;
+  sharedWithAccountIds: string[];
 }
 
 export default Document;

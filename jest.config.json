@@ -11,7 +11,8 @@
     "jsx",
     "json",
     "node",
-    "png"
+    "png",
+    "svg"
   ],
   "moduleNameMapper": {
     "\\.(css|scss|svg|png)$": "identity-obj-proxy"

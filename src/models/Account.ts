@@ -11,8 +11,8 @@ interface Account {
   hash?: string;
   salt?: string;
   token: string;
-  documents: [Document?];
-  shareRequests: [ShareRequest?];
+  documents: Document[];
+  shareRequests: ShareRequest[];
 }
 
 export default Account;

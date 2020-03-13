@@ -1,14 +1,13 @@
 @import '../../colors.scss';
 
 .document-summary-container {
-  cursor: pointer;
-  //border: 1px solid blue;
   text-align: center;
   padding: 24px;
 }
 
 .document-summary-image {
   max-width: 100%;
+  min-width: 250px;
   height: 300px;
   object-fit: contain;
   border: 2px solid #ccc;

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Breadcrumb, BreadcrumbItem, ListGroup, ListGroupItem} from 'reactstrap';
 import Document from '../../models/Document';
+import DocumentService from '../../services/DocumentService';
 
 interface DocumentDetailProps {
   document: Document;
@@ -22,8 +23,8 @@ class DocumentDetail extends Component<DocumentDetailProps> {
           <BreadcrumbItem active>Driver's License</BreadcrumbItem>
         </Breadcrumb>
         <img className="document-summary-image"
-             src={document.url}
-             alt="document"
+             src={DocumentService.getDocumentURL(document.url)}
+             alt="doc missing"
         />
         <div className="title padding-top-12">{document.type}</div>
         <div className="subtitle padding-bottom-12">SHARED WITH</div>

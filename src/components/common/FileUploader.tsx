@@ -10,7 +10,7 @@ interface FileUploaderProps {
 }
 
 class FileUploader extends Component<FileUploaderProps, FileUploaderState> {
-  // private acceptedFiles: File[];
+  // private acceptedFiles: Folder[];
   // private readonly getRootProps: (props?: DropzoneRootProps) => DropzoneRootProps;
   // private readonly getInputProps: (props?: DropzoneInputProps) => DropzoneInputProps;
   // private readonly files: JSX.Element[];
@@ -26,7 +26,7 @@ class FileUploader extends Component<FileUploaderProps, FileUploaderState> {
     //   this.acceptedFiles = acceptedFiles;
     //   this.getRootProps = getRootProps;
     //   this.getInputProps = getInputProps;
-    //   this.files = this.acceptedFiles.map((file: File) => (
+    //   this.files = this.acceptedFiles.map((file: Folder) => (
     //     <li key={(file as any).path}>
     //       {(file as any).path} - {file.size} bytes
     //     </li>
