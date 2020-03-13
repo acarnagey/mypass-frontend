@@ -1,8 +1,8 @@
 // TODO use .env for developer's local config
 import AuthService from './AuthService';
 
-const API_ENDPOINT = 'http://localhost:5000/api';
-// const API_ENDPOINT = 'http://34.212.27.73:5000/api';
+// const API_ENDPOINT = 'http://localhost:5000/api';
+const API_ENDPOINT = 'http://34.212.27.73:5000/api';
 
 // const { API_ENDPOINT } = process.env;
 
