@@ -17,6 +17,8 @@ jobs:
             - run: sudo pip install awscli --upgrade
             - run: aws --version
             - run: aws s3 ls
+            - run: cp .env.prod .env
+            - run: ls -a
             - run: npm run deploy
 workflows:
     build-and-test:
