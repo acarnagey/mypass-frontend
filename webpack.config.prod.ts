@@ -1,5 +1,5 @@
 import * as webpack from 'webpack';
-// import Dotenv from 'dotenv-webpack';
+import Dotenv from 'dotenv-webpack';
 import * as path from 'path';
 // import ExtractTextPlugin from 'extract-text-webpack-plugin';
 //  import CompressionPlugin from 'compression-webpack-plugin';
@@ -30,9 +30,9 @@ const config: webpack.Configuration = {
     // }),
     new webpack.optimize.OccurrenceOrderPlugin(true),
     new webpack.DefinePlugin(GLOBALS),
-    // new Dotenv({
-    //   path: './.env'
-    // }),
+    new Dotenv({
+      path: './.env.prod'
+    }),
     new MiniCssExtractPlugin({
       filename: 'style.css'
     })

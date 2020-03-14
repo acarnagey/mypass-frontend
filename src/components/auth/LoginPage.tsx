@@ -52,7 +52,6 @@ class LoginPage extends Component<LoginProps, LoginState> {
 
     try {
       const loginResponse = await AccountService.login({account: {email, password}});
-      console.log(JSON.stringify(loginResponse));
       await handleLogin(loginResponse);
       return;
     } catch (err) {
@@ -70,34 +69,34 @@ class LoginPage extends Component<LoginProps, LoginState> {
 
     return (
       <div className="login-background">
-        <div className="login-container">
-          <Card className="login-card">
-            <CardBody>
-              <img className="logo login-logo" src={folderImage} alt="Logo"/>
-              <div className="login-title">MyPass</div>
-              <div className="login-subtitle">Login</div>
-              <Form onSubmit={this.handleLogin}>
-                {errorMessage && <div className="error">{errorMessage}</div>}
-                <FormGroup>
-                  <Label for="email">Email</Label>
-                  <Input type="email" name="email" id="email" value={email} onChange={this.handleInputChange}
-                         placeholder="Email"/>
-                </FormGroup>
-                <FormGroup>
-                  <Label for="password">Password</Label>
-                  <Input type="password"
-                         name="password"
-                         id="password"
-                         value={password}
-                         onChange={this.handleInputChange}
-                         placeholder="Password"
-                  />
-                </FormGroup>
-                <Button type="submit">Login</Button>
-              </Form>
-            </CardBody>
-          </Card>
-        </div>
+          <div className="login-container">
+            <Card className="login-card">
+              <CardBody>
+                <img className="logo login-logo" src={folderImage} alt="Logo"/>
+                <div className="login-title">MyPass</div>
+                <div className="login-subtitle">Login</div>
+                <Form onSubmit={this.handleLogin}>
+                  {errorMessage && <div className="error">{errorMessage}</div>}
+                  <FormGroup>
+                    <Label for="email">Email</Label>
+                    <Input type="email" name="email" id="email" value={email} onChange={this.handleInputChange}
+                           placeholder="Email"/>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="password">Password</Label>
+                    <Input type="password"
+                           name="password"
+                           id="password"
+                           value={password}
+                           onChange={this.handleInputChange}
+                           placeholder="Password"
+                    />
+                  </FormGroup>
+                  <Button className="login-btn" type="submit">Login</Button>
+                </Form>
+              </CardBody>
+            </Card>
+          </div>
       </div>
     );
   }

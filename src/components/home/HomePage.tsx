@@ -28,6 +28,7 @@ import Folder from '../common/Folder';
 import deleteSvg from '../../img/delete.svg';
 
 interface HomePageState {
+  documents: Document[];
   searchedDocuments: Document[];
   documentSelected?: Document;
   isAccount: boolean;
@@ -49,6 +50,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     super(props);
 
     this.state = {
+      documents: [],
       searchedDocuments: [],
       documentSelected: undefined,
       isAccount: false,
@@ -64,18 +66,21 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     const {account} = {...this.props};
     const {sortAsc} = {...this.state};
     const documents: Document[] = account.documents;
-    this.setState({ searchedDocuments: this.sortDocuments(documents, sortAsc) });
+    this.setState({ documents, searchedDocuments: this.sortDocuments(documents, sortAsc) });
   }
 
-  handleSearchDocuments(query: string) {
-    // const { documents, sortAsc } = { ...this.state };
-    // let searchedDocuments = documents
-    //     .filter(document => {
-    //         return document.type.toLowerCase().indexOf(query.toLowerCase()) !== -1
-    //     });
-    // searchedDocuments = this.sortDocuments(searchedDocuments, sortAsc);
-    // this.setState({searchedDocuments});
-  }
+  handleSearchDocuments = (query: string) => {
+    const { documents, sortAsc } = { ...this.state };
+    let searchedDocuments = documents
+        .filter(document => {
+            return document.type && document.type.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+        });
+    if(query.length === 0) {
+      searchedDocuments = documents;
+    }
+    searchedDocuments = this.sortDocuments(searchedDocuments, sortAsc);
+    this.setState({searchedDocuments});
+  };
 
   toggleSort = () => {
     let {sortAsc, searchedDocuments} = {...this.state};
@@ -127,7 +132,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
   };
 
   handleAddNewDocument = async () => {
-    const {newFile, searchedDocuments} = {...this.state};
+    const {newFile, documents, searchedDocuments} = {...this.state};
     this.setState({isLoading: true});
     try {
       if (newFile) {
@@ -143,15 +148,16 @@ class HomePage extends Component<HomePageProps, HomePageState> {
           sharedWithAccountIds: []
         };
         searchedDocuments.push(newDocument);
+        documents.push(newDocument);
       }
     } catch (err) {
       console.error('failed to upload file');
     }
-    this.setState({searchedDocuments, showModal: false, isLoading: false});
+    this.setState({documents, searchedDocuments, showModal: false, isLoading: false});
   };
 
   handleDeleteDocument = async (document: Document) => {
-    let { searchedDocuments } = {...this.state};
+    let { documents, searchedDocuments } = {...this.state};
     this.setState({isLoading: true});
 
     try {
@@ -163,8 +169,11 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     searchedDocuments = searchedDocuments.filter(searchedDocument => {
       return (searchedDocument as Document).url !== document.url;
     });
+    documents = documents.filter(documentItem => {
+      return (documentItem as Document).url !== document.url;
+    });
 
-    this.setState({ searchedDocuments, isLoading: false });
+    this.setState({documents, searchedDocuments, isLoading: false });
   };
 
   renderModal() {

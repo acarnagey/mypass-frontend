@@ -4,20 +4,28 @@
 //@use '~@material/base';
 //////@import 'dropzone.scss';
 //@import '~@material/menu/mdc-menu';
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 @import 'colors.scss';
 
+html { height:100%; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Roboto, Arial, sans-serif;
+  position:absolute; top:0; bottom:0; right:0; left:0;
+  background-color: #FCFCFC;
+  font-family: Montserrat, Arial, sans-serif;
   //padding: 15px;
   display: flex;
-  height: 100vh;
   width: 100vw;
 }
 
 #root {
   display: flex;
   width: 100%;
+}
+
+#root .btn-primary {
+  background-color: $blue;
+  border-color: $blue;
 }
 
 .error {
@@ -46,7 +54,7 @@ body {
 
 .big-title {
   font-size: 28px;
-  color: #666;
+  color: $blue;
   font-weight: bolder;
 }
 

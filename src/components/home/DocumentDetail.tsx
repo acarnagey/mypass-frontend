@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Breadcrumb, BreadcrumbItem, ListGroup, ListGroupItem} from 'reactstrap';
 import Document from '../../models/Document';
 import DocumentService from '../../services/DocumentService';
+import StringUtil from '../../util/StringUtil';
 
 interface DocumentDetailProps {
   document: Document;
@@ -32,19 +33,19 @@ class DocumentDetail extends Component<DocumentDetailProps> {
           <div>No documents are being shared.</div>
         )}
         <ListGroup>
-          {/*{document.sharedWith.map((sharedWithItem, idx) => {*/}
-          {/*  return (*/}
-          {/*    <ListGroupItem key={idx} className="justify-content-between">*/}
-          {/*      <img className="shared-with-image-single"*/}
-          {/*           src={sharedWithItem.profileimgUrl}*/}
-          {/*           alt={`sharedWithItem${idx}`}*/}
-          {/*      />*/}
-          {/*      <div style={{marginLeft: '24px', display: 'inline-block'}}>*/}
-          {/*        {`${sharedWithItem.firstName} ${sharedWithItem.lastName}`}*/}
-          {/*      </div>*/}
-          {/*    </ListGroupItem>*/}
-          {/*  );*/}
-          {/*})}*/}
+          {document.sharedWithAccountIds.map((sharedWithAccountId, idx) => {
+            return (
+              <ListGroupItem key={idx} className="justify-content-between">
+                {/*<img className="shared-with-image-single"*/}
+                {/*     src={sharedWithItem.profileimgUrl}*/}
+                {/*     alt={`sharedWithItem${idx}`}*/}
+                {/*/>*/}
+                <div style={{display: 'inline-block'}}>
+                  {`Account ID: ${sharedWithAccountId}`}
+                </div>
+              </ListGroupItem>
+            );
+          })}
         </ListGroup>
       </div>
     );
