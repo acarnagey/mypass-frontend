@@ -83,6 +83,7 @@
 
   .home-content {
     display: flex;
+    flex-grow: 1;
     // ios bug
     // https://stackoverflow.com/a/43683067
     flex-shrink: 0;
