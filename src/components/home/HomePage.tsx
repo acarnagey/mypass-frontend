@@ -66,16 +66,16 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     const {account} = {...this.props};
     const {sortAsc} = {...this.state};
     const documents: Document[] = account.documents;
-    this.setState({ documents, searchedDocuments: this.sortDocuments(documents, sortAsc) });
+    this.setState({documents, searchedDocuments: this.sortDocuments(documents, sortAsc)});
   }
 
   handleSearchDocuments = (query: string) => {
-    const { documents, sortAsc } = { ...this.state };
+    const {documents, sortAsc} = {...this.state};
     let searchedDocuments = documents
-        .filter(document => {
-            return document.type && document.type.toLowerCase().indexOf(query.toLowerCase()) !== -1;
-        });
-    if(query.length === 0) {
+      .filter(document => {
+        return document.type && document.type.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+      });
+    if (query.length === 0) {
       searchedDocuments = documents;
     }
     searchedDocuments = this.sortDocuments(searchedDocuments, sortAsc);
@@ -157,7 +157,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
   };
 
   handleDeleteDocument = async (document: Document) => {
-    let { documents, searchedDocuments } = {...this.state};
+    let {documents, searchedDocuments} = {...this.state};
     this.setState({isLoading: true});
 
     try {
@@ -173,7 +173,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
       return (documentItem as Document).url !== document.url;
     });
 
-    this.setState({documents, searchedDocuments, isLoading: false });
+    this.setState({documents, searchedDocuments, isLoading: false});
   };
 
   renderModal() {
@@ -200,33 +200,40 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     const {isAccountMenuOpen} = {...this.state};
 
     return (
-      <div id="home-top-bar">
-        <div id="home-logo">
-          <Folder />
-          {/*<img className="logo" src={`${window.location.origin}/${folderImage}`} alt="Logo"/>*/}
+      <Fragment>
+        <div id="home-top-bar">
+          <div id="home-logo">
+            <Folder/>
+            {/*<img className="logo" src={`${window.location.origin}/${folderImage}`} alt="Logo"/>*/}
+          </div>
+          <Row id="home-search">
+            <Col style={{display: 'flex'}}>
+              <SearchInput handleSearch={this.handleSearchDocuments}/>
+            </Col>
+          </Row>
+          <div id="home-profile">
+            <Dropdown isOpen={isAccountMenuOpen} toggle={this.toggleAccountMenu}>
+              <DropdownToggle
+                tag="span"
+                data-toggle="dropdown"
+                aria-expanded={isAccountMenuOpen}
+              >
+                <div className="account-circle">{StringUtil.getFirstUppercase(account.username)}</div>
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem onClick={this.goToAccount}>My Account</DropdownItem>
+                <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            {/*<img className="account-profile-image" src={account.profileimgUrl} />*/}
+          </div>
         </div>
-        <Row id="home-search">
+        <Row id="home-search-sm">
           <Col style={{display: 'flex'}}>
             <SearchInput handleSearch={this.handleSearchDocuments}/>
           </Col>
         </Row>
-        <div id="home-profile">
-          <Dropdown isOpen={isAccountMenuOpen} toggle={this.toggleAccountMenu}>
-            <DropdownToggle
-              tag="span"
-              data-toggle="dropdown"
-              aria-expanded={isAccountMenuOpen}
-            >
-              <div className="account-circle">{StringUtil.getFirstUppercase(account.username)}</div>
-            </DropdownToggle>
-            <DropdownMenu right>
-              <DropdownItem onClick={this.goToAccount}>My Account</DropdownItem>
-              <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-          {/*<img className="account-profile-image" src={account.profileimgUrl} />*/}
-        </div>
-      </div>
+      </Fragment>
     );
   }
 
@@ -273,7 +280,8 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                 >
                   <div style={{
                     display: 'flex',
-                    justifyContent: 'flex-end'}}>
+                    justifyContent: 'flex-end'
+                  }}>
                     <img
                       style={{cursor: 'pointer'}}
                       src={deleteSvg}

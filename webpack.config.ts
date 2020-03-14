@@ -23,6 +23,8 @@ const config: webpack.Configuration = {
   },
   devServer: {
     port: 3001,
+    // to get private IP addresses to work to test on emulators
+    host: '0.0.0.0',
     disableHostCheck: true,
     historyApiFallback: {
       rewrites: [
